@@ -37,9 +37,10 @@ server.build_job(job_name, parameters=json.loads(JOB_PARAMS), token=JENKINS_TOKE
 queue_info = server.get_queue_info()
 queue_id = queue_info[0].get('id')
 
-# define url to request build_number
-url = f"{JENKINS_USER}:{JENKINS_TOKEN}@{JENKINS_URL}/queue/item/{queue_id}/api/json?pretty=true"
+parts = JENKINS_URL.split("://", 1)
 
+# define url to request build_number
+url = f"{parts[0]}://{JENKINS_USER}:{JENKINS_TOKEN}@{parts[1]}/queue/item/{queue_id}/api/json?pretty=true"
 
 def get_trigger_info(url: str):
     trigger_info = requests.get(url).json()
